@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Post</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="page-add">
+    <header>
+        <nav class="container">
+            <h1>Add New Post</h1>
+            <a href="index.html" class="nav-button">Back to Blog</a>
+        </nav>
+    </header>
+
+    <main class="container">
+        <form id="add-post-form">
+            <label for="title">Title:</label>
+            <input type="text" id="title" required>
+
+            <label for="anons">Anons:</label>
+            <textarea id="anons" required></textarea>
+
+            <label for="full-text">Full Content:</label>
+            <textarea id="full-text" rows="10" required></textarea>
+
+            <button type="submit" class="btn-primary">Publish Post</button>
+        </form>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>
