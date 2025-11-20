@@ -1,45 +1,89 @@
-const STORAGE_KEY = 'staticBlogPosts';
+const API_URL = "https://691efa51bb52a1db22bfea97.mockapi.io/blog/posts";
 
-function getPosts() {
-    const posts = localStorage.getItem(STORAGE_KEY);
-    return posts ? JSON.parse(posts) : [];
+async function getPosts() {
+    try {
+        const response = await fetch(API_URL);
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return await response.json();
+    } catch (error) {
+        console.error("Failed to fetch posts:", error);
+        return [];
+    }
 }
 
-function savePosts(posts) {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(posts));
-}
-
-function addPost(title, anons, fullText) {
-    const posts = getPosts();
+async function addPost(title, anons, fullText) {
     const newPost = {
-        id: Date.now(),
         title: title,
         anons: anons,
-        fullText: fullText,
-        date: new Date().toLocaleDateString(),
+        full_text: fullText,
+        date: Math.floor(Date.now() / 1000),
     };
-    posts.unshift(newPost);
-    savePosts(posts);
+    console.log("Sending:", newPost);
+
+
+    try {
+        const response = await fetch(API_URL, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(newPost),
+        });
+        
+        if (!response.ok) {
+            const errorBody = await response.text(); 
+            throw new Error(`HTTP error! status: ${response.status} - ${errorBody}`);
+        }
+        
+        return await response.json();
+    } catch (error) {
+        console.error("Failed to add post:", error);
+        throw error; 
+    }
 }
 
-function getPostById(id) {
-    const posts = getPosts();
-    return posts.find(post => post.id == id);
+async function getPostById(id) {
+    try {
+        const response = await fetch(`${API_URL}/${id}`);
+        if (response.status === 404) {
+             return null;
+        }
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return await response.json();
+    } catch (error) {
+        console.error(`Failed to fetch post with ID ${id}:`, error);
+        return null;
+    }
 }
 
-function deletePost(id) {
-    let posts = getPosts();
-    posts = posts.filter(post => post.id != id);
-    savePosts(posts);
+async function deletePost(id) {
+    try {
+        const response = await fetch(`${API_URL}/${id}`, {
+            method: 'DELETE',
+        });
+        
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        
+        return await response.json(); 
+    } catch (error) {
+        console.error(`Failed to delete post with ID ${id}:`, error);
+        throw error;
+    }
 }
 
-
-
-function renderPosts() {
+async function renderPosts() {
     const postList = document.getElementById('post-list');
     if (!postList) return;
 
-    const posts = getPosts();
+    postList.innerHTML = '<p class="text-info">Loading posts...</p>'; 
+
+    const posts = await getPosts();
     postList.innerHTML = ''; 
 
     if (posts.length === 0) {
@@ -63,23 +107,27 @@ function setupAddForm() {
     const form = document.getElementById('add-post-form');
     if (!form) return;
 
-    form.addEventListener('submit', function(e) {
+    form.addEventListener('submit', async function(e) {
         e.preventDefault();
         
-        const title = document.getElementById('title').value;
-        const anons = document.getElementById('anons').value;
-        const fullText = document.getElementById('full-text').value;
+        const title = document.getElementById('title').value.trim();
+        const anons = document.getElementById('anons').value.trim();
+        const fullText = document.getElementById('full-text').value.trim();
         
         if (title && anons && fullText) {
-            addPost(title, anons, fullText);
-            window.location.href = 'index.html'; 
+            try {
+                await addPost(title, anons, fullText); 
+                window.location.href = 'index.html'; 
+            } catch (error) {
+                alert('Failed to save post. Check console for details.');
+            }
         } else {
             alert('Please fill out all fields.');
         }
     });
 }
 
-function renderPostDetail() {
+async function renderPostDetail() {
     const postDetail = document.getElementById('post-detail');
     if (!postDetail) return;
 
@@ -90,24 +138,32 @@ function renderPostDetail() {
         postDetail.innerHTML = '<p class="text-danger">Post ID is missing.</p>';
         return;
     }
+    
+    postDetail.innerHTML = '<p class="text-info">Loading post details...</p>';
 
-    const post = getPostById(postId);
+    const post = await getPostById(postId);
 
     if (post) {
+        const displayDate = post.date 
+            ? new Date(parseInt(post.date)).toLocaleDateString() 
+            : 'N/A';
+            
         postDetail.innerHTML = `
             <h1>${post.title}</h1>
-            <p class="post-date">Published: ${post.date}</p>
-            <p class="post-content">${post.fullText.replace(/\n/g, '<br>')}</p>
+            <p class="post-date">Published: ${displayDate}</p>
+            <p class="post-content">${post.full_text.replace(/\n/g, '<br>')}</p>
             <button id="delete-btn" class="btn-danger">Delete Post</button>
             <a href="index.html" class="btn-back">← Back to Blog</a>
         `;
 
-
-
-        document.getElementById('delete-btn').addEventListener('click', () => {
+        document.getElementById('delete-btn').addEventListener('click', async () => {
             if (confirm(`Are you sure you want to delete "${post.title}"?`)) {
-                deletePost(postId);
-                window.location.href = 'index.html';
+                try {
+                    await deletePost(postId);
+                    window.location.href = 'index.html';
+                } catch (error) {
+                    alert('Failed to delete post. Check console for details.');
+                }
             }
         });
 
