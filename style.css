@@ -1,10 +1,9 @@
-/* GLOBAL STYLES */
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     margin: 0;
     padding: 0;
-    background-color: #0d1117; /* GitHub Dark Mode Black */
-    color: #c9d1d9; /* Off-white text */
+    background-color: #0d1117; 
+    color: #c9d1d9; 
     line-height: 1.6;
 }
 
@@ -15,9 +14,8 @@ body {
     padding: 20px 0;
 }
 
-/* HEADER AND NAVIGATION */
 header {
-    background-color: #161b22; /* Slightly Lighter Dark Header */
+    background-color: #161b22; 
     color: white;
     padding: 15px 0;
     margin-bottom: 30px;
@@ -31,14 +29,14 @@ header nav {
 }
 
 header h1 {
-    color: #58a6ff; /* Neon Blue Accent */
+    color: #58a6ff; 
     margin: 0;
     font-weight: 700;
 }
 
 .nav-button {
-    background-color: #58a6ff; /* Solid Neon Blue Button */
-    color: #0d1117; /* Dark text for contrast */
+    background-color: #58a6ff; 
+    color: #0d1117; 
     padding: 10px 18px;
     text-decoration: none;
     border: none;
@@ -48,33 +46,32 @@ header h1 {
 }
 
 .nav-button:hover {
-    background-color: #79c0ff; /* Lighter blue on hover */
+    background-color: #79c0ff; 
 }
 
-/* POST LIST AND CARDS */
 h2 {
-    color: #58a6ff; /* Accent Blue for headings */
+    color: #58a6ff; 
     margin-bottom: 25px;
     border-bottom: 2px solid #21262d;
     padding-bottom: 5px;
 }
 
 .post-card {
-    background-color: #161b22; /* Card background matches header */
+    background-color: #161b22; 
     padding: 25px;
-    border-radius: 15px; /* Prominent rounded corners */
-    border: 1px solid #30363d; /* Subtle light border */
+    border-radius: 15px; 
+    border: 1px solid #30363d; 
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
     margin-bottom: 25px;
     transition: border-color 0.3s;
 }
 
 .post-card:hover {
-    border-color: #79c0ff; /* Blue border glow on hover */
+    border-color: #79c0ff; 
 }
 
 .post-card h2 {
-    color: #79c0ff; /* Lighter blue for post titles */
+    color: #79c0ff; 
     margin-top: 0;
     border-bottom: none;
     padding-bottom: 0;
@@ -85,7 +82,7 @@ h2 {
 }
 
 .post-card a, .btn-back {
-    color: #58a6ff; /* Neon Blue link color */
+    color: #58a6ff; 
     text-decoration: none;
     font-weight: bold;
     transition: color 0.3s;
@@ -95,14 +92,13 @@ h2 {
     color: #c9d1d9;
 }
 
-/* FORM STYLES (Add Post Page) */
 #add-post-form input[type="text"],
 #add-post-form textarea {
     width: 100%;
     padding: 12px;
     margin-bottom: 15px;
     border: 1px solid #30363d;
-    background-color: #0d1117; /* Input background matches body */
+    background-color: #0d1117;
     color: #c9d1d9;
     border-radius: 6px;
     box-sizing: border-box;
@@ -123,16 +119,15 @@ h2 {
 }
 
 .btn-primary {
-    background-color: #2ea44f; /* Solid Green Primary */
+    background-color: #2ea44f;
 }
 
 .btn-danger {
-    background-color: #f85149; /* Solid Red Danger */
+    background-color: #f85149; 
 }
 
 
 
-/* Post Detail Specific */
 .post-date {
     color: #777;
     font-size: 0.9em;
@@ -145,12 +140,10 @@ h2 {
     background-color: #161b22;
     padding: 20px;
     border-radius: 10px;
-    white-space: pre-wrap; /* Сохраняет твои переводы строк */
+    white-space: pre-wrap;
     
-    /* === ДОБАВЛЯЕМ СЮДА ПЕРЕНОС === */
     word-wrap: break-word; 
     overflow-wrap: break-word;
-    /* ============================= */
 }
 
 
